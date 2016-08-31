@@ -141,7 +141,10 @@ namespace iAhri
             SubMenu["Misc"].Add("CatchQMovement", new CheckBox("Catch the Q with movement", false));
             SubMenu["Misc"].Add("Gapclose", new CheckBox("Use E on gapclose spells", true));
             SubMenu["Misc"].Add("Channeling", new CheckBox("Use E on channeling spells", true));
-
+            SubMenu["Misc"].AddLabel("HitChance : 1 = Low, 2 = Medium, 3 = High");
+            SubMenu["Misc"].Add("PredQ", new Slider("Q HitChance", 2, 1, 3));
+            SubMenu["Misc"].Add("PredE", new Slider("E HitChance", 2, 1, 3));
+            
             Game.OnTick += OnTick;
             GameObject.OnCreate += OnCreateObj;
             GameObject.OnDelete += OnDeleteObj;
@@ -153,6 +156,36 @@ namespace iAhri
             Interrupter.OnInterruptableSpell += OnInterruptableSpell;
         }
 
+        public static HitChance PredQ()
+        {
+        	var mode = SubMenu["Misc"]["PredQ"].Cast<Slider>().CurrentValue;
+            switch (mode)
+            {
+                case 1:
+                    return HitChance.Low;
+                case 2:
+                    return HitChance.Medium;
+                case 3:
+                    return HitChance.High;
+            }
+            return HitChance.Medium;
+        }
+        
+        public static HitChance PredE()
+        {
+            var mode = SubMenu["Misc"]["PredE"].Cast<Slider>().CurrentValue;;
+            switch (mode)
+            {
+                case 1:
+                    return HitChance.Low;
+                case 2:
+                    return HitChance.Medium;
+                case 3:
+                    return HitChance.High;
+            }
+            return HitChance.Medium;
+        }
+        
         public static bool IsWall(Vector3 v)
         {
             var v2 = v.To2D();
@@ -362,7 +395,7 @@ namespace iAhri
 //                    _Q["Target"] = target;
 //                }
 				var hitchance = pred.GetHitChance(SpellSlot.Q, Q.Range, SkillShotType.Linear, Q.CastDelay, Q.Speed, Q.Width,Player.Instance.ServerPosition,target);
-	            if (hitchance >= HitChance.Medium)
+	            if (hitchance >= PredQ())
 	            {
 	                pred.CastPredictedSpell(SpellSlot.Q, Q.Range, SkillShotType.Linear, Q.CastDelay, Q.Speed, Q.Width,target, false, false);
 	                _Q["Target"] = target;
@@ -374,21 +407,22 @@ namespace iAhri
         {
             if (W.IsReady() && target.IsValidTarget())
             {
-                var r = W.GetPrediction(target);
-                if (r.HitChance >= HitChance.Medium)
-                {
-                    if (target.Type == myHero.Type)
-                    {
-                        if (_Q["Object"] != null || Orbwalker.LastTarget.NetworkId == target.NetworkId)
-                        {
-                            myHero.Spellbook.CastSpell(W.Slot);
-                        }
-                    }
-                    else
-                    {
-                        myHero.Spellbook.CastSpell(W.Slot);
-                    }
-                }
+            	myHero.Spellbook.CastSpell(W.Slot);
+//                var r = W.GetPrediction(target);
+//                if (r.HitChance >= HitChance.Medium)
+//                {
+//                    if (target.Type == myHero.Type)
+//                    {
+//                        if (_Q["Object"] != null || Orbwalker.LastTarget.NetworkId == target.NetworkId)
+//                        {
+//                            myHero.Spellbook.CastSpell(W.Slot);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        myHero.Spellbook.CastSpell(W.Slot);
+//                    }
+//                }
             }
         }
 
@@ -402,7 +436,7 @@ namespace iAhri
 //                    E.Cast(r.CastPosition);
 //                }
 				var hitchance = pred.GetHitChance(SpellSlot.E, E.Range, SkillShotType.Linear, E.CastDelay, E.Speed, E.Width,Player.Instance.ServerPosition,target);
-	            if (hitchance >= HitChance.Medium)
+	            if (hitchance >= PredE())
 	            {
 	                pred.CastPredictedSpell(SpellSlot.E, E.Range, SkillShotType.Linear, E.CastDelay, E.Speed, E.Width,target, true, false);
 	            }

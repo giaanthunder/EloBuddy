@@ -14,10 +14,6 @@ namespace AddonTemplate.Modes
 
         public override void Execute()
         {
-        	foreach(var buff in Player.Instance.Buffs)
-        	{
-        		Chat.Print(buff.Name);
-        	}
         	if (SpellManager.E.IsReady() && Settings.EFlee)
             {
                 var tempPos = Game.CursorPos;

@@ -265,7 +265,7 @@ namespace MasterMind.Components
                 var pos = ally.ServerPosition.WorldToMinimap();
             	var barPos = pos + new Vector2(-11, -10);
                 EloBuddy.SDK.Rendering.Line.DrawLine(Color.White, 4, barPos, barPos + new Vector2(20, 0));
-                EloBuddy.SDK.Rendering.Line.DrawLine(Color.GreenYellow, 2, barPos + new Vector2(2, 0), barPos + new Vector2(18*(ally.Health/ally.MaxHealth), 0));
+                EloBuddy.SDK.Rendering.Line.DrawLine(Color.Blue, 2, barPos + new Vector2(2, 0), barPos + new Vector2(18*(ally.Health/ally.MaxHealth), 0));
             }
         }
 

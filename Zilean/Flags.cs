@@ -15,7 +15,6 @@ namespace Zilean
 
         public static void Combo()
         {
-            Brain.AutoR(); // ult on combo orly?
             var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
             if (target == null || !target.IsValidTarget()) return;
 
@@ -71,7 +70,6 @@ namespace Zilean
 
         public static void Harass()
         {
-            Brain.AutoR(); // ult on harass orly?
             var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
             if (target == null || !target.IsValidTarget()) return;
 

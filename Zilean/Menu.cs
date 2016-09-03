@@ -64,14 +64,14 @@ namespace Zilean
             Ult Menu
             */
             UltMenu = Zilean.AddSubMenu("UltMenu", "UltMenu");
-            UltMenu.AddGroupLabel("Ultimate Options");
+            UltMenu.AddGroupLabel("Ultimate Options (% Health + Level)");
             UltMenu.AddSeparator();
             foreach (var h in EntityManager.Heroes.Allies)
             {
                 UltMenu.AddSeparator();
                 UltMenu.Add("r" + h.ChampionName, new CheckBox("Ult ON " + h.ChampionName));
                 UltMenu.AddSeparator();
-                UltMenu.Add("rpct" + h.ChampionName, new Slider("Health % " + h.ChampionName, 10));
+                UltMenu.Add("rpct" + h.ChampionName, new Slider("Health % " + h.ChampionName, 4));
             }
 
             /*

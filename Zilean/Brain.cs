@@ -92,14 +92,15 @@ namespace Zilean
         {
             if (Spells.R.IsReady())
             {
-                var whotoult = EntityManager.Heroes.Allies.Where(
-                    x => !x.IsDead && !x.IsInShopRange() && !x.IsInvulnerable && !x.IsZombie &&
-                         x.Distance(_Player) <= Spells.R.Range &&
-                         Utils.isChecked(MenuX.UltMenu, "r" + x.ChampionName) &&
-                         x.HealthPercent <= Utils.getSliderValue(MenuX.UltMenu, "rpct" + x.ChampionName)).ToList();
-                var ally = whotoult.OrderBy(x => x.Health).FirstOrDefault();
-                if (ally != null && _Player.CountEnemiesInRange(1000) > 0)
-                    Spells.R.Cast(ally);
+            	foreach(var ally in EntityManager.Heroes.Allies)
+            	{
+            		if(!ally.IsDead && !ally.IsInShopRange() && !ally.IsInvulnerable && !ally.IsZombie &&
+                         ally.IsInRange(_Player,Spells.R.Range) &&
+                         Utils.isChecked(MenuX.UltMenu, "r" + ally.ChampionName) &&
+                         ally.HealthPercent <= (Utils.getSliderValue(MenuX.UltMenu, "rpct" + ally.ChampionName)+Player.Instance.Level) &&
+                         _Player.CountEnemiesInRange(1000) > 0)
+            			Spells.R.Cast(ally);
+            	}
             }
         }
     }
